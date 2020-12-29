@@ -7,6 +7,7 @@ import {
 import API from "./Api";
 import Auth from "./Auth";
 import pathHelper from "../utils/page";
+import {getFolderPath} from "../utils";
 
 const initUserConfig = siteConfig => {
     if (siteConfig.user !== undefined && !siteConfig.user.anonymous) {
@@ -38,8 +39,7 @@ export const InitSiteConfig = rawStore => {
         rawStore.siteConfig = configCache;
     }
     // 检查是否有path参数
-    const url = new URL(window.location.href);
-    const c = url.searchParams.get("path");
+    const c = getFolderPath();
     rawStore.navigator.path = c === null ? "/" : c;
     // 初始化用户个性配置
     rawStore.siteConfig = initUserConfig(rawStore.siteConfig);

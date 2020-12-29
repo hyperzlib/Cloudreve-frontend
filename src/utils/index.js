@@ -62,6 +62,28 @@ export const checkGetParameters = field => {
     return false;
 };
 
+export const setFolderPath = (path) => {
+    let url = '/home';
+    if(path[0] === '/'){
+        url += encodeURI(path);
+    } else {
+        url += encodeURI('/' + path);
+    }
+    if (url === window.location.href) {
+        return;
+    }
+    window.history.pushState(null, null, url);
+}
+
+export const getFolderPath = () => {
+    const pathname = window.location.pathname;
+    if(pathname.indexOf('/home') === 0 && pathname[5] == '/'){
+        return decodeURI(pathname.substr(5));
+    } else {
+        return '/';
+    }
+}
+
 export const changeThemeColor = color => {
     const metaThemeColor = window.document.querySelector(
         "meta[name=theme-color]"

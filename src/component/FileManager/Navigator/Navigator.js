@@ -27,7 +27,7 @@ import {
 } from "../../../actions/index";
 import explorer from "../../../redux/explorer";
 import API from "../../../middleware/Api";
-import { setCookie, setGetParameter, fixUrlHash } from "../../../utils/index";
+import {setCookie, setFolderPath, getFolderPath} from "../../../utils/index";
 import {
     withStyles,
     Divider,
@@ -181,8 +181,7 @@ class NavigatorComponent extends Component {
     }
 
     componentDidMount = () => {
-        const url = new URL(fixUrlHash(window.location.href));
-        const c = url.searchParams.get("path");
+        const c = getFolderPath();
         this.renderPath(c === null ? "/" : c);
 
         if (!this.props.isShare) {
@@ -192,8 +191,7 @@ class NavigatorComponent extends Component {
 
         // 后退操作时重新导航
         window.onpopstate = () => {
-            const url = new URL(fixUrlHash(window.location.href));
-            const c = url.searchParams.get("path");
+            const c = getFolderPath();
             if (c !== null) {
                 this.props.navigateToPath(c);
             }
@@ -216,7 +214,7 @@ class NavigatorComponent extends Component {
             : "/file/search/";
         newPath = this.keywords === "" ? newPath : this.keywords;
 
-        API.get(apiURL + encodeURIComponent(newPath))
+        API.get(apiURL + encodeURI(newPath))
             .then(response => {
                 this.currentID = response.data.parent;
                 this.props.updateFileList(response.data.objects);
@@ -227,7 +225,7 @@ class NavigatorComponent extends Component {
                 ).join(",");
                 setCookie("path_tmp", encodeURIComponent(pathTemp), 1);
                 if (this.keywords === "") {
-                    setGetParameter("path", encodeURIComponent(newPath));
+                    setFolderPath(newPath);
                 }
             })
             .catch(error => {
