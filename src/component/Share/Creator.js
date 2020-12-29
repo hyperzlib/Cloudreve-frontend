@@ -71,6 +71,8 @@ export default function Creator(props) {
                 {!props.isFolder && (
                     <>
                         {" "}
+                        由
+                        {" "}
                         <Link
                             onClick={() => userProfile()}
                             href={"javascript:void(0)"}
@@ -78,7 +80,7 @@ export default function Creator(props) {
                         >
                             {props.share.creator.nick}
                         </Link>{" "}
-                        向您分享了 1 个文件
+                        分享的文件
                     </>
                 )}
             </Typography>

@@ -114,7 +114,7 @@ function Reset() {
         e.preventDefault();
         setLoading(true);
         API.post("/user/reset", {
-            userName: input.email,
+            email: input.email,
             captchaCode: input.captcha
         })
             .then(() => {

@@ -39,6 +39,7 @@ export default function UserForm(props) {
             ? props.user
             : {
                   ID: 0,
+                  UserName: "",
                   Email: "",
                   Nick: "",
                   Password: "", // 为空时只读
@@ -115,6 +116,20 @@ export default function UserForm(props) {
                     </Typography>
 
                     <div className={classes.formContainer}>
+                        <div className={classes.form}>
+                            <FormControl fullWidth>
+                                <InputLabel htmlFor="component-helper">
+                                    用户名
+                                </InputLabel>
+                                <Input
+                                    value={user.UserName}
+                                    type={"text"}
+                                    onChange={handleChange("UserName")}
+                                    required
+                                />
+                            </FormControl>
+                        </div>
+
                         <div className={classes.form}>
                             <FormControl fullWidth>
                                 <InputLabel htmlFor="component-helper">

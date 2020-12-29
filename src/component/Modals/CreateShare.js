@@ -38,6 +38,7 @@ import OutlinedInput from "@material-ui/core/OutlinedInput";
 import Tooltip from "@material-ui/core/Tooltip";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
+import Auth from "../../middleware/Auth";
 
 const useStyles = makeStyles(theme => ({
     widthAnimation: {},
@@ -128,6 +129,8 @@ export default function CreatShare(props) {
         preview: true
     });
 
+    let canModify = true;
+
     const handleChange = prop => event => {
         // 输入密码
         if (prop === "password") {
@@ -178,24 +181,28 @@ export default function CreatShare(props) {
         setShareOption({ ...shareOption, [prop]: !shareOption[prop] });
     };
 
-    const onClose = () => {
-        props.onClose();
-        setTimeout(() => {
-            setShareURL("");
-        }, 500);
-    };
-
-    const submitShare = e => {
-        e.preventDefault();
+    const submitShare = () => {
         props.setModalsLoading(true);
-        const submitFormBody = {
-            id: props.selected[0].id,
-            is_dir: props.selected[0].type === "dir",
-            password: values.password,
-            downloads: shareOption.expire ? values.downloads : -1,
-            expire: values.expires,
-            preview: shareOption.preview
-        };
+        let submitFormBody;
+        if(canModify) {
+            submitFormBody = {
+                id: props.selected[0].id,
+                is_dir: props.selected[0].type === "dir",
+                password: values.password,
+                downloads: shareOption.expire ? values.downloads : -1,
+                expire: values.expires,
+                preview: shareOption.preview
+            };
+        } else {
+            submitFormBody = {
+                id: props.selected[0].id,
+                is_dir: props.selected[0].type === "dir",
+                password: '',
+                downloads: -1,
+                expire: -1,
+                preview: true
+            };
+        }
 
         API.post("/share", submitFormBody)
             .then(response => {
@@ -218,11 +225,32 @@ export default function CreatShare(props) {
             });
     };
 
+    const onEntering = () => {
+        const user = Auth.GetUser();
+        canModify = user.group.shareModify;
+        if(!canModify){
+            submitShare();
+        }
+    };
+
+    const onClose = () => {
+        props.onClose();
+        setTimeout(() => {
+            setShareURL("");
+        }, 500);
+    };
+
+    const submitShareAction = e => {
+        e.preventDefault();
+        submitShare();
+    }
+
     const handleFocus = event => event.target.select();
 
     return (
         <Dialog
             open={props.open}
+            onEntering={onEntering}
             onClose={onClose}
             aria-labelledby="form-dialog-title"
             className={classes.widthAnimation}
@@ -440,7 +468,7 @@ export default function CreatShare(props) {
                 {shareURL === "" && (
                     <div className={classes.wrapper}>
                         <Button
-                            onClick={submitShare}
+                            onClick={submitShareAction}
                             color="secondary"
                             disabled={props.modalsLoading}
                         >

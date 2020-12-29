@@ -11,6 +11,8 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { toggleSnackbar } from "../../../actions";
 import API from "../../../middleware/Api";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Switch from "@material-ui/core/Switch";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -41,6 +43,8 @@ export default function SiteInformation() {
         siteDes: "",
         siteICPId: "",
         siteScript: "",
+        public_share: "0",
+        auto_share: "0",
         pwa_small_icon: "",
         pwa_medium_icon: "",
         pwa_large_icon: "",
@@ -48,6 +52,14 @@ export default function SiteInformation() {
         pwa_theme_color: "",
         pwa_background_color: ""
     });
+
+    const handleCheckChange = name => event => {
+        const value = event.target.checked ? "1" : "0";
+        setOptions({
+            ...options,
+            [name]: value
+        });
+    };
 
     const handleChange = name => event => {
         setOptions({
@@ -193,6 +205,55 @@ export default function SiteInformation() {
                                 />
                                 <FormHelperText id="component-helper-text">
                                     在页面底部插入的自定义HTML代码
+                                </FormHelperText>
+                            </FormControl>
+                        </div>
+                    </div>
+                </div>
+                <div className={classes.root}>
+                    <Typography variant="h6" gutterBottom>
+                        文件共享站点
+                    </Typography>
+                    <div className={classes.formContainer}>
+                        <div className={classes.form}>
+                            <FormControl fullWidth>
+                                <FormControlLabel
+                                    control={
+                                        <Switch
+                                            checked={
+                                                options.public_share ===
+                                                "1"
+                                            }
+                                            onChange={handleCheckChange(
+                                                "public_share"
+                                            )}
+                                        />
+                                    }
+                                    label="公共文件共享"
+                                />
+                                <FormHelperText id="component-helper-text">
+                                    开启后，游客将能够查看共享文件的列表
+                                </FormHelperText>
+                            </FormControl>
+                        </div>
+                        <div className={classes.form}>
+                            <FormControl fullWidth>
+                                <FormControlLabel
+                                    control={
+                                        <Switch
+                                            checked={
+                                                options.auto_share ===
+                                                "1"
+                                            }
+                                            onChange={handleCheckChange(
+                                                "auto_share"
+                                            )}
+                                        />
+                                    }
+                                    label="自动共享"
+                                />
+                                <FormHelperText id="component-helper-text">
+                                    开启后，新上传的文件将会被自动共享
                                 </FormHelperText>
                             </FormControl>
                         </div>

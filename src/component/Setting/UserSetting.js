@@ -8,7 +8,9 @@ import HomeIcon from "@material-ui/icons/Home";
 import LinkIcon from "@material-ui/icons/Phonelink";
 import InputIcon from "@material-ui/icons/Input";
 import SecurityIcon from "@material-ui/icons/Security";
-import NickIcon from "@material-ui/icons/PermContactCalendar";
+import UidIcon from "@material-ui/icons/PermIdentity";
+import NickIcon from "@material-ui/icons/Face";
+import UserNameIcon from "@material-ui/icons/AccountBox";
 import LockIcon from "@material-ui/icons/Lock";
 import VerifyIcon from "@material-ui/icons/VpnKey";
 import ColorIcon from "@material-ui/icons/Palette";
@@ -620,7 +622,7 @@ class UserSettingCompoment extends Component {
                             <Divider />
                             <ListItem button>
                                 <ListItemIcon className={classes.iconFix}>
-                                    <PermContactCalendar />
+                                    <UidIcon />
                                 </ListItemIcon>
                                 <ListItemText primary="UID" />
 
@@ -665,6 +667,22 @@ class UserSettingCompoment extends Component {
                             <Divider />
                             <ListItem button>
                                 <ListItemIcon className={classes.iconFix}>
+                                    <UserNameIcon />
+                                </ListItemIcon>
+                                <ListItemText primary="用户名" />
+
+                                <ListItemSecondaryAction>
+                                    <Typography
+                                        className={classes.infoText}
+                                        color="textSecondary"
+                                    >
+                                        {user.user_name}
+                                    </Typography>
+                                </ListItemSecondaryAction>
+                            </ListItem>
+                            <Divider />
+                            <ListItem button>
+                                <ListItemIcon className={classes.iconFix}>
                                     <EmailIcon />
                                 </ListItemIcon>
                                 <ListItemText primary="Email" />
@@ -674,7 +692,7 @@ class UserSettingCompoment extends Component {
                                         className={classes.infoText}
                                         color="textSecondary"
                                     >
-                                        {user.user_name}
+                                        {user.email}
                                     </Typography>
                                 </ListItemSecondaryAction>
                             </ListItem>

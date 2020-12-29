@@ -583,7 +583,7 @@ class ContextMenuCompoment extends Component {
                                         <ShareIcon />
                                     </ListItemIcon>
                                     <Typography variant="inherit">
-                                        创建分享链接
+                                        获取分享链接
                                     </Typography>
                                 </MenuItem>
                             )}

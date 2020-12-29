@@ -339,6 +339,33 @@ export default function Group() {
                                         ) : null}
                                     </TableSortLabel>
                                 </TableCell>
+                                <TableCell style={{ minWidth: 120 }}>
+                                    <TableSortLabel
+                                        active={orderBy[0] === "user_name"}
+                                        direction={orderBy[1]}
+                                        onClick={() =>
+                                            setOrderBy([
+                                                "user_name",
+                                                orderBy[1] === "asc"
+                                                    ? "desc"
+                                                    : "asc"
+                                            ])
+                                        }
+                                    >
+                                        用户名
+                                        {orderBy[0] === "user_name" ? (
+                                            <span
+                                                className={
+                                                    classes.visuallyHidden
+                                                }
+                                            >
+                                                {orderBy[1] === "desc"
+                                                    ? "sorted descending"
+                                                    : "sorted ascending"}
+                                            </span>
+                                        ) : null}
+                                    </TableSortLabel>
+                                </TableCell>
                                 <TableCell style={{ minWidth: 170 }}>
                                     <TableSortLabel
                                         active={orderBy[0] === "email"}
@@ -425,6 +452,7 @@ export default function Group() {
                                     </TableCell>
                                     <TableCell>{row.ID}</TableCell>
                                     <TableCell>{row.Nick}</TableCell>
+                                    <TableCell>{row.UserName}</TableCell>
                                     <TableCell>{row.Email}</TableCell>
                                     <TableCell>
                                         <Link

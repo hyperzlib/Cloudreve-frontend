@@ -62,6 +62,7 @@ export default function GroupForm(props) {
                   OptionsSerialized: {
                       // 批量转换类型
                       share_download: "true",
+                      share_modify: "true",
                       aria2_options: "{}", // json decode
                       compress_size: "0",
                       decompress_size: "0"
@@ -150,6 +151,7 @@ export default function GroupForm(props) {
             "archive_task",
             "one_time_download",
             "share_download",
+            "share_modify",
             "aria2"
         ].forEach(v => {
             if (groupCopy.OptionsSerialized[v] !== undefined) {
@@ -340,6 +342,30 @@ export default function GroupForm(props) {
                                 </FormHelperText>
                             </FormControl>
                         </div>
+
+                        {group.ID !== 3 && (
+                            <div className={classes.form}>
+                                <FormControl fullWidth>
+                                    <FormControlLabel
+                                        control={
+                                            <Switch
+                                                checked={
+                                                    group.OptionsSerialized
+                                                        .share_modify === "true"
+                                                }
+                                                onChange={handleOptionCheckChange(
+                                                    "share_modify"
+                                                )}
+                                            />
+                                        }
+                                        label="允许修改分享"
+                                    />
+                                    <FormHelperText id="component-helper-text">
+                                        关闭后，用户无法更新和删除分享内容
+                                    </FormHelperText>
+                                </FormControl>
+                            </div>
+                        )}
 
                         {group.ID !== 3 && (
                             <div className={classes.form}>

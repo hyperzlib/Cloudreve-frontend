@@ -89,7 +89,7 @@ function ResetForm() {
         API.patch("/user/reset", {
             secret: query.get("sign"),
             id: query.get("id"),
-            Password: input.password
+            password: input.password
         })
             .then(() => {
                 setLoading(false);

@@ -83,6 +83,7 @@ const useStyles = makeStyles(theme => ({
 
 function Register() {
     const [input, setInput] = useState({
+        username: "",
         email: "",
         password: "",
         password_repeat: "",
@@ -136,6 +137,11 @@ function Register() {
     const register = e => {
         e.preventDefault();
 
+        if (input.username.indexOf('@') >= 0) {
+            ToggleSnackbar("top", "right", "用户名中不能包含@", "warning");
+            return;
+        }
+
         if (input.password !== input.password_repeat) {
             ToggleSnackbar("top", "right", "两次密码输入不一致", "warning");
             return;
@@ -143,8 +149,9 @@ function Register() {
 
         setLoading(true);
         API.post("/user", {
-            userName: input.email,
-            Password: input.password,
+            username: input.username,
+            email: input.email,
+            password: input.password,
             captchaCode: input.captcha
         })
             .then(response => {
@@ -152,7 +159,7 @@ function Register() {
                 if (response.rawData.code === 203) {
                     setEmailActive(true);
                 } else {
-                    history.push("/login?username=" + input.email);
+                    history.push("/login?username=" + input.username);
                     ToggleSnackbar("top", "right", "注册成功", "success");
                 }
             })
@@ -185,6 +192,20 @@ function Register() {
 
                         <form className={classes.form} onSubmit={register}>
                             <FormControl margin="normal" required fullWidth>
+                                <InputLabel htmlFor="username">
+                                    用户名
+                                </InputLabel>
+                                <Input
+                                    id="username"
+                                    type="text"
+                                    name="username"
+                                    onChange={handleInputChange("username")}
+                                    autoComplete
+                                    value={input.username}
+                                    autoFocus
+                                />
+                            </FormControl>
+                            <FormControl margin="normal" required fullWidth>
                                 <InputLabel htmlFor="email">
                                     电子邮箱
                                 </InputLabel>
@@ -195,7 +216,6 @@ function Register() {
                                     onChange={handleInputChange("email")}
                                     autoComplete
                                     value={input.email}
-                                    autoFocus
                                 />
                             </FormControl>
                             <FormControl margin="normal" required fullWidth>

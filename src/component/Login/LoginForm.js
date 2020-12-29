@@ -92,7 +92,7 @@ function useQuery() {
 }
 
 function LoginForm() {
-    const [email, setEmail] = useState("");
+    const [identity, setIdentity] = useState("");
     const [pwd, setPwd] = useState("");
     const [captcha, setCaptcha] = useState("");
     const [loading, setLoading] = useState(false);
@@ -147,7 +147,7 @@ function LoginForm() {
     }, []);
 
     useEffect(() => {
-        setEmail(query.get("username"));
+        setIdentity(query.get("username"));
         if (loginCaptcha && !useReCaptcha) {
             refreshCaptcha();
         }
@@ -181,7 +181,7 @@ function LoginForm() {
 
         setLoading(true);
 
-        API.get("/user/authn/" + email)
+        API.get("/user/authn/" + identity)
             .then(response => {
                 const credentialRequestOptions = response.data;
                 console.log(credentialRequestOptions);
@@ -206,7 +206,7 @@ function LoginForm() {
                 const userHandle = assertion.response.userHandle;
 
                 return API.post(
-                    "/user/authn/finish/" + email,
+                    "/user/authn/finish/" + identity,
                     JSON.stringify({
                         id: assertion.id,
                         rawId: bufferEncode(rawId),
@@ -236,8 +236,8 @@ function LoginForm() {
         e.preventDefault();
         setLoading(true);
         API.post("/user/session", {
-            userName: email,
-            Password: pwd,
+            username: identity,
+            password: pwd,
             captchaCode: captcha
         })
             .then(response => {
@@ -287,16 +287,16 @@ function LoginForm() {
                         {!useAuthn && (
                             <form className={classes.form} onSubmit={login}>
                                 <FormControl margin="normal" required fullWidth>
-                                    <InputLabel htmlFor="email">
-                                        电子邮箱
+                                    <InputLabel htmlFor="identity">
+                                        用户名/电子邮箱
                                     </InputLabel>
                                     <Input
-                                        id="email"
-                                        type="email"
-                                        name="email"
-                                        onChange={e => setEmail(e.target.value)}
+                                        id="identity"
+                                        type="text"
+                                        name="identity"
+                                        onChange={e => setIdentity(e.target.value)}
                                         autoComplete
-                                        value={email}
+                                        value={identity}
                                         autoFocus
                                     />
                                 </FormControl>
@@ -394,16 +394,16 @@ function LoginForm() {
                         {useAuthn && (
                             <form className={classes.form}>
                                 <FormControl margin="normal" required fullWidth>
-                                    <InputLabel htmlFor="email">
-                                        电子邮箱
+                                    <InputLabel htmlFor="identity">
+                                        用户名/电子邮箱
                                     </InputLabel>
                                     <Input
-                                        id="email"
-                                        type="email"
-                                        name="email"
-                                        onChange={e => setEmail(e.target.value)}
+                                        id="identity"
+                                        type="identity"
+                                        name="identity"
+                                        onChange={e => setIdentity(e.target.value)}
                                         autoComplete
-                                        value={email}
+                                        value={identity}
                                         autoFocus
                                     />
                                 </FormControl>

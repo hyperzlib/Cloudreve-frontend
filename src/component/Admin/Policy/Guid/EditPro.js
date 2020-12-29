@@ -210,6 +210,26 @@ export default function EditPro(props) {
                             </TableRow>
                             <TableRow>
                                 <TableCell component="th" scope="row">
+                                    网站回调URL
+                                </TableCell>
+                                <TableCell>
+                                    <FormControl>
+                                        <Input
+                                            multiline
+                                            value={
+                                                policy.OptionsSerialized
+                                                    .callback_base_url
+                                            }
+                                            onChange={handleOptionChange(
+                                                "callback_base_url"
+                                            )}
+                                        />
+                                    </FormControl>
+                                </TableCell>
+                                <TableCell>默认为网站URL，如果需要走其他线路请填写此项</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell component="th" scope="row">
                                     AccessKey
                                 </TableCell>
                                 <TableCell>

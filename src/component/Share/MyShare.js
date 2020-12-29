@@ -35,6 +35,7 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import { withRouter } from "react-router-dom";
+import Auth from "../../middleware/Auth";
 
 const styles = theme => ({
     cardContainer: {
@@ -100,12 +101,15 @@ class MyShareCompoment extends Component {
     state = {
         page: 1,
         total: 0,
+        allowModify: true,
         shareList: [],
         showPwd: null,
         orderBy: "created_at DESC"
     };
 
     componentDidMount = () => {
+        const user = Auth.GetUser();
+        this.setState({ allowModify: user.group.shareModify } );
         this.loadList(1, this.state.orderBy);
     };
 
@@ -378,78 +382,83 @@ class MyShareCompoment extends Component {
                                         >
                                             <OpenIcon />
                                         </IconButton>
-                                    </Tooltip>{" "}
-                                    {value.password !== "" && (
+                                    </Tooltip>
+                                    {this.state.allowModify && (
                                         <>
+                                        {" "}
+                                        {value.password !== "" && (
+                                            <>
+                                                <Tooltip
+                                                    placement="top"
+                                                    title="变更为公开分享"
+                                                    onClick={() =>
+                                                        this.changePermission(
+                                                            value.key
+                                                        )
+                                                    }
+                                                >
+                                                    <IconButton>
+                                                        <LockIcon />
+                                                    </IconButton>
+                                                </Tooltip>
+                                                <Tooltip
+                                                    placement="top"
+                                                    title="查看密码"
+                                                    onClick={() =>
+                                                        this.showPwd(value.password)
+                                                    }
+                                                >
+                                                    <IconButton>
+                                                        <VpnKey />
+                                                    </IconButton>
+                                                </Tooltip>
+                                            </>
+                                        )}
+                                        {value.password === "" && (
                                             <Tooltip
                                                 placement="top"
-                                                title="变更为公开分享"
+                                                title="变更为私密分享"
                                                 onClick={() =>
-                                                    this.changePermission(
-                                                        value.key
-                                                    )
+                                                    this.changePermission(value.key)
                                                 }
                                             >
                                                 <IconButton>
-                                                    <LockIcon />
+                                                    <UnlockIcon />
                                                 </IconButton>
                                             </Tooltip>
-                                            <Tooltip
-                                                placement="top"
-                                                title="查看密码"
-                                                onClick={() =>
-                                                    this.showPwd(value.password)
-                                                }
-                                            >
-                                                <IconButton>
-                                                    <VpnKey />
-                                                </IconButton>
-                                            </Tooltip>
-                                        </>
-                                    )}
-                                    {value.password === "" && (
+                                        )}
                                         <Tooltip
                                             placement="top"
-                                            title="变更为私密分享"
+                                            title={
+                                                value.preview
+                                                    ? "禁止预览"
+                                                    : "允许预览"
+                                            }
                                             onClick={() =>
-                                                this.changePermission(value.key)
+                                                this.changePreviewOption(value.key)
                                             }
                                         >
                                             <IconButton>
-                                                <UnlockIcon />
+                                                {!value.preview ? (
+                                                    <VisibilityOff />
+                                                ) : (
+                                                    <EyeIcon />
+                                                )}
                                             </IconButton>
                                         </Tooltip>
+                                        <Tooltip
+                                            placement="top"
+                                            title="取消分享"
+                                            onClick={() =>
+                                                this.removeShare(value.key)
+                                            }
+                                        >
+                                            <IconButton>
+                                                <DeleteIcon />
+                                            </IconButton>
+                                        </Tooltip>
+                                        </>
                                     )}
-                                    <Tooltip
-                                        placement="top"
-                                        title={
-                                            value.preview
-                                                ? "禁止预览"
-                                                : "允许预览"
-                                        }
-                                        onClick={() =>
-                                            this.changePreviewOption(value.key)
-                                        }
-                                    >
-                                        <IconButton>
-                                            {!value.preview ? (
-                                                <VisibilityOff />
-                                            ) : (
-                                                <EyeIcon />
-                                            )}
-                                        </IconButton>
-                                    </Tooltip>
-                                    <Tooltip
-                                        placement="top"
-                                        title="取消分享"
-                                        onClick={() =>
-                                            this.removeShare(value.key)
-                                        }
-                                    >
-                                        <IconButton>
-                                            <DeleteIcon />
-                                        </IconButton>
-                                    </Tooltip>
                                 </CardActions>
                             </Card>
                         </Grid>
