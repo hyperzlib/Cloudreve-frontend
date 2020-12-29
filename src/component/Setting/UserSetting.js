@@ -50,7 +50,7 @@ import API from "../../middleware/Api";
 import Auth from "../../middleware/Auth";
 import { withRouter } from "react-router";
 import QRCode from "qrcode-react";
-import { Brightness3, ListAlt, PermContactCalendar } from "@material-ui/icons";
+import { Brightness3, ListAlt } from "@material-ui/icons";
 import { transformTime } from "../../utils";
 import Authn from "./Authn";
 
