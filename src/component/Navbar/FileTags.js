@@ -225,7 +225,7 @@ export default function FileTag() {
                         button
                         key="我的文件"
                         onClick={() =>
-                            !isHomePage && history.push("/home?path=%2F")
+                            !isHomePage && history.push("/home")
                         }
                     >
                         <ListItemIcon>
